@@ -6,6 +6,8 @@ import java.io.UnsupportedEncodingException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import az.mxl.network.NetWorkManager.APPTYPE;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -62,19 +64,37 @@ public class GsonRequest<T> extends Request<T> {
 			String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
 			NetLog.w4defualtTag(json);
 			JSONObject jsonObject = new JSONObject(json);
-			JSONObject msg = jsonObject.getJSONObject("msg");
-			if("ok".equals(jsonObject.getString("code"))){
-				T t = GsonUtil.getModleByGson(msg.toString(), mClass);
-				if(t == null){
-					NetLog.w4defualtTag("bean解析失败");
-					return Response.error(new FailError("数据错误"));
-				} else{
-					NetLog.w4defualtTag("网络数据获取成功(code = ok)");
-					return Response.success(t, HttpHeaderParser.parseCacheHeaders(response));
-				}
-			} else 
-				NetLog.w4defualtTag("code != ok");
-				return Response.error(new FailError(msg.getString("alertMsg")));
+			if (NetWorkManager.getAPP_TYPE() == APPTYPE.TYPE_USER) {
+				JSONObject msg = jsonObject.getJSONObject("msg");
+				if("ok".equals(jsonObject.getString("code"))){
+					T t = GsonUtil.getModleByGson(msg.toString(), mClass);
+					if(t == null){
+						NetLog.w4defualtTag("bean解析失败");
+						return Response.error(new FailError("数据错误"));
+					} else{
+						NetLog.w4defualtTag("网络数据获取成功(code = ok)");
+						return Response.success(t, HttpHeaderParser.parseCacheHeaders(response));
+					}
+				} else 
+					NetLog.e4defualtTag("code != ok");
+					return Response.error(new FailError(msg.getString("alertMsg")));
+			} else if(NetWorkManager.getAPP_TYPE() == APPTYPE.TYPE_AUNT){
+				int result = jsonObject.getInt("result");
+				if(result == 1){
+					T t = GsonUtil.getModleByGson(json, mClass);
+					if(t == null){
+						NetLog.w4defualtTag("bean解析失败");
+						return Response.error(new FailError("数据错误"));
+					} else{
+						NetLog.w4defualtTag("网络数据获取成功(code = ok)");
+						return Response.success(t, HttpHeaderParser.parseCacheHeaders(response));
+					}
+				} else 
+					NetLog.e4defualtTag("result != 1");
+					return Response.error(new FailError(jsonObject.getString("msg")));
+			} else{
+				throw new IllegalStateException("not set app type！");
+			}
 		} catch (UnsupportedEncodingException e) {// 编码
 			return Response.error(new ParseError(e));
 		} catch (JsonParseException e) {// json解析err

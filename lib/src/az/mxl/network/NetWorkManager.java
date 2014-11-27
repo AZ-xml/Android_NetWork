@@ -13,8 +13,15 @@ import com.android.volley.toolbox.Volley;
  */
 public class NetWorkManager {
 
+	public enum APPTYPE{
+		TYPE_USER,
+		TYPE_AUNT
+	}
+	
 	private static boolean isDebug;
 	
+	private static APPTYPE APP_TYPE = APPTYPE.TYPE_USER;
+
 	/**
 	 * the queue :-)
 	 */
@@ -36,6 +43,20 @@ public class NetWorkManager {
 		mRequestQueue = Volley.newRequestQueue(context);
 	}
 
+	public static void init(Context context, APPTYPE apptype, boolean debug) {
+		mRequestQueue = Volley.newRequestQueue(context);
+		setAPP_TYPE(apptype);
+		isDebug = debug;
+	}
+	
+	public static APPTYPE getAPP_TYPE() {
+		return APP_TYPE;
+	}
+
+	public static void setAPP_TYPE(APPTYPE aPP_TYPE) {
+		APP_TYPE = aPP_TYPE;
+	}
+	
 	/**
 	 * 设置开启log,发布时请关闭
 	 * @param debug

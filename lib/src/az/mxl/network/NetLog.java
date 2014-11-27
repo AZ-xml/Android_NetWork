@@ -15,5 +15,15 @@ public class NetLog {
 			Log.w(tag, msg);
 	}
 
+	public static void e4defualtTag(String msg) {
+		w4defualtTag(TAG, msg);
+	}
+	
+	protected static void e4defualtTag(String tag, String msg) {
+		if (NetWorkManager.isDebug())
+			Log.e(tag, msg);
+	}
+	
+
 }
 
