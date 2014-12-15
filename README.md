@@ -1,7 +1,16 @@
 Android_NetWork
 ===============
-使用方法:
+本库说明：整合Volley+Gson两个开源库，实现网络请求、数据解析一步到位！
 
+
+注：1、APP中所有接口前面的“域名”都是一样的，所有本库把完整api分为三块（“域名”，api名称，参数）；
+    2、各自公司后台返回json数据最外层应该也一样！
+下面我们以
+“查询用户信息）api:http://az.com/mxl/getUserInfo?id=110;
+返回json格式为：{"code":"ok","msg":{"name":"az","age":"25","email":"maxinliang_no1@163.com"}}
+介绍使用方法!
+
+使用方法:
 1、首先创建自己的NetWork类，继承本库中的NetWork<T>；
   
 public class MyNetWork<T> extends NetWork<T> {
@@ -37,3 +46,34 @@ public class MyNetWork<T> extends NetWork<T> {
 	}
 
 }
+
+2、在用户信息页面执行NetWork
+	1）先生成相应的NetWor对象：
+	private EJiaJieNetWork<UserInfoBean> getUserInfo = new EJiaJieNetWork<UserInfoBean>(ApiConstantData.USER_INFO, UserInfoBean.class,
+				new OnDataSourceListener<UserInfoBean>() {
+					@Override
+					public void onSuccessData(UserInfoBean response, Object tag) {
+						// 数据使用
+					}
+	
+					@Override
+					public QueryParameter getQueryParameter() {
+						return QueryParameter.Builder().put("id", "110");
+					}
+	
+					@Override
+					public void onPerData() {
+						showProgress();
+					}
+	
+					@Override
+					public void onFinishData() {
+						hideProgress();
+					}
+	
+					@Override
+					public void onFailData(ErrorInfo err, Object tag) {
+						// showAlterToast(err.getMsg());
+					}
+				});
+	2)使用：getUserInfo.start();
