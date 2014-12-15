@@ -13,14 +13,16 @@ import com.android.volley.toolbox.Volley;
  */
 public class NetWorkManager {
 
-	public enum APPTYPE{
-		TYPE_USER,
-		TYPE_AUNT
+	/**
+	 * app类型，对于不同类型app可修改本库内的某些机制
+	 */
+	public enum APPTYPE {
+		TYPE_1, TYPE_2
 	}
-	
+
 	private static boolean isDebug;
-	
-	private static APPTYPE APP_TYPE = APPTYPE.TYPE_USER;
+
+	private static APPTYPE APP_TYPE = APPTYPE.TYPE_1;
 
 	/**
 	 * the queue :-)
@@ -33,9 +35,10 @@ public class NetWorkManager {
 	private NetWorkManager() {
 		// no instances
 	}
-	
+
 	/**
 	 * 初始化 NetWorkLib
+	 * 
 	 * @param context
 	 *            application context
 	 */
@@ -43,12 +46,25 @@ public class NetWorkManager {
 		mRequestQueue = Volley.newRequestQueue(context);
 	}
 
+	/**
+	 * 初始化 NetWorkLib
+	 * 
+	 * @param context
+	 *            application context
+	 * @param debug
+	 *            设置开启log,发布时请关闭
+	 */
+	public static void init(Context context, boolean debug) {
+		mRequestQueue = Volley.newRequestQueue(context);
+		isDebug = debug;
+	}
+
 	public static void init(Context context, APPTYPE apptype, boolean debug) {
 		mRequestQueue = Volley.newRequestQueue(context);
 		setAPP_TYPE(apptype);
 		isDebug = debug;
 	}
-	
+
 	public static APPTYPE getAPP_TYPE() {
 		return APP_TYPE;
 	}
@@ -56,19 +72,20 @@ public class NetWorkManager {
 	public static void setAPP_TYPE(APPTYPE aPP_TYPE) {
 		APP_TYPE = aPP_TYPE;
 	}
-	
+
 	/**
 	 * 设置开启log,发布时请关闭
+	 * 
 	 * @param debug
 	 */
-	public static void setDebug(boolean debug){
+	public static void setDebug(boolean debug) {
 		isDebug = debug;
 	}
 
-	protected static boolean isDebug(){
+	protected static boolean isDebug() {
 		return isDebug;
 	}
-	
+
 	/**
 	 * @return instance of the queue
 	 * @throws IllegalStatException

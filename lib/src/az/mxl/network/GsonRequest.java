@@ -1,6 +1,5 @@
 package az.mxl.network;
 
-
 import java.io.UnsupportedEncodingException;
 
 import org.json.JSONException;
@@ -52,7 +51,7 @@ public class GsonRequest<T> extends Request<T> {
 		this.mClass = objectClass;
 		this.mListener = listener;
 	}
-	
+
 	@Override
 	protected void deliverResponse(T model) {
 		mListener.onResponse(model);
@@ -64,35 +63,23 @@ public class GsonRequest<T> extends Request<T> {
 			String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
 			NetLog.w4defualtTag(json);
 			JSONObject jsonObject = new JSONObject(json);
-			if (NetWorkManager.getAPP_TYPE() == APPTYPE.TYPE_USER) {
+			if (NetWorkManager.getAPP_TYPE() == APPTYPE.TYPE_1) {
 				JSONObject msg = jsonObject.getJSONObject("msg");
-				if("ok".equals(jsonObject.getString("code"))){
+				if ("ok".equals(jsonObject.getString("code"))) {
 					T t = GsonUtil.getModleByGson(msg.toString(), mClass);
-					if(t == null){
+					if (t == null) {
 						NetLog.w4defualtTag("bean解析失败");
 						return Response.error(new FailError("数据错误"));
-					} else{
+					} else {
 						NetLog.w4defualtTag("网络数据获取成功(code = ok)");
 						return Response.success(t, HttpHeaderParser.parseCacheHeaders(response));
 					}
-				} else 
+				} else
 					NetLog.e4defualtTag("code != ok");
-					return Response.error(new FailError(msg.getString("alertMsg")));
-			} else if(NetWorkManager.getAPP_TYPE() == APPTYPE.TYPE_AUNT){
-				int result = jsonObject.getInt("result");
-				if(result == 1){
-					T t = GsonUtil.getModleByGson(json, mClass);
-					if(t == null){
-						NetLog.w4defualtTag("bean解析失败");
-						return Response.error(new FailError("数据错误"));
-					} else{
-						NetLog.w4defualtTag("网络数据获取成功(code = ok)");
-						return Response.success(t, HttpHeaderParser.parseCacheHeaders(response));
-					}
-				} else 
-					NetLog.e4defualtTag("result != 1");
-					return Response.error(new FailError(jsonObject.getString("msg")));
-			} else{
+				return Response.error(new FailError(msg.getString("alertMsg")));
+			} else if (NetWorkManager.getAPP_TYPE() == APPTYPE.TYPE_2) {
+				return null;// 其他类型解析
+			} else {
 				throw new IllegalStateException("not set app type！");
 			}
 		} catch (UnsupportedEncodingException e) {// 编码
@@ -101,7 +88,7 @@ public class GsonRequest<T> extends Request<T> {
 			return Response.error(new ParseError(e));
 		} catch (JSONException e) {// json解析err
 			return Response.error(new ParseError(e));
-		} 
+		}
 	}
-	
+
 }

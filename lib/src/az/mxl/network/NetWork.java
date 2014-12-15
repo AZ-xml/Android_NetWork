@@ -273,7 +273,7 @@ public abstract class NetWork<T> extends NetWork4Base<T> implements Response.Lis
 				if (queryParameter == null) 
 					return params;
 				for (Entry<String, Object> e : queryParameter.getParame().entrySet()) {
-					params.put(e.getKey(), e.getValue().toString());
+					params.put(e.getKey(), e.getValue() == null ? "" : e.getValue().toString());
 				}
 				return params;
 			}
