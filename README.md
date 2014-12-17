@@ -90,7 +90,9 @@ public class UserInfoBean {
 ```
 
 * 3、在用户信息页面执行NetWork
-	* 1)、先生成相应的NetWork对象：
+	* 1、先生成相应的NetWork对象
+	* 2、开始网络请求getUserInfoNetWork.start()
+
 ```java
 private EJiaJieNetWork<UserInfoBean> getUserInfoNetWork = new EJiaJieNetWork<UserInfoBean>(ApiConstantData.USER_INFO, UserInfoBean.class,
 			new OnDataSourceListener<UserInfoBean>() {
@@ -119,10 +121,9 @@ private EJiaJieNetWork<UserInfoBean> getUserInfoNetWork = new EJiaJieNetWork<Use
 					// showAlterToast(err.getMsg());
 				}
 			});
-
+			
+getUserInfoNetWork.start();
 ```
-	* 2)、开始网络请求：getUserInfoNetWork.start();
-
 
 *******************
 
