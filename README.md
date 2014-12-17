@@ -5,9 +5,9 @@
 ##使用方法:
 
 注：<br>
-1、APP中所有接口前面的“域名”都是一样的，所有本库把完整api分为三块（“域名”，api名称，参数）；<br>
-2、服务器返回json数据：<br>
-    {"code":"ok","alertMsg":"获取用户信息成功","msg":{"name":"az","age":"25","email":"maxinliang_no1@163.com"}}。json最外层的code和alertMsg假设是服务器规定的格式，当访问成功时code=ok，不成功时code!=ok，alertMsg是对于本次访问的说明。对于这俩字段的解析在本库内部[GsonRequest][gsonRequest]进行了处理，所以msg才是主要信息(当写解析类时只写msg中的对应字段就可)。<br>
+1. APP中所有接口前面的“域名”都是一样的，所有本库把完整api分为三块（“域名”，api名称，参数）。
+2. 服务器返回json数据：{"code":"ok","alertMsg":"获取用户信息成功","msg":{"name":"az","age":"25","email":"maxinliang_no1@163.com"}}。
+3. json最外层的code和alertMsg假设是服务器规定的格式，当访问成功时code=ok，不成功时code!=ok，alertMsg是对于本次访问的说明。对于这俩字段的解析在本库内部[GsonRequest][gsonRequest]进行了处理，所以msg才是主要信息(当写解析类时只写msg中的对应字段就可)。<br>
 
 下面我们以查询用户信息api(<http://az.com/mxl/getUserInfo?id=110>)进行介绍怎样使用<br>
 
@@ -89,8 +89,10 @@ public class UserInfoBean {
 ```
 
 * 3、在用户信息页面执行NetWork
+
+1. 先生成相应的NetWork对象：
+2. 
 ```java
-- 先生成相应的NetWork对象：
 private EJiaJieNetWork<UserInfoBean> getUserInfoNetWork = new EJiaJieNetWork<UserInfoBean>(ApiConstantData.USER_INFO, UserInfoBean.class,
 			new OnDataSourceListener<UserInfoBean>() {
 				@Override
@@ -119,8 +121,8 @@ private EJiaJieNetWork<UserInfoBean> getUserInfoNetWork = new EJiaJieNetWork<Use
 				}
 			});
 
-- 开始网络请求：getUserInfoNetWork.start();
 ```
+2. 开始网络请求：getUserInfoNetWork.start();
 
 
 *******************
