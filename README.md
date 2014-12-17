@@ -129,7 +129,7 @@ private EJiaJieNetWork<UserInfoBean> getUserInfoNetWork = new EJiaJieNetWork<Use
 			
 getUserInfoNetWork.start();
 ```
-* 5、不要忘了加上网了权限：
+* 5、不要忘了加上网络权限：
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
