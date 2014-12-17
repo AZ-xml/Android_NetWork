@@ -2,7 +2,7 @@
 ===============
 本库说明：整合Volley+Gson两个开源库，实现网络请求、数据解析一步到位！
 
-* 注：
+- 注：
 		1、APP中所有接口前面的“域名”都是一样的，所有本库把完整api分为三块（“域名”，api名称，参数）；
 		2、各自公司后台返回json数据最外层应该也一样！
 		下面我们以
@@ -12,7 +12,7 @@
 
 ##使用方法:
 
-*首先创建自己的NetWork类，继承本库中的NetWork<T>；
+* 1、首先创建自己的NetWork类，继承本库中的NetWork<T>；
 
 ```java
 public class MyNetWork<T> extends NetWork<T> {
@@ -54,12 +54,45 @@ public class MyNetWork<T> extends NetWork<T> {
 	}
 }
 ```
-
-2、在用户信息页面执行NetWork
-	1）先生成相应的NetWor对象：
-
+* 2、根据后台回传的json格式写好Model类
 ```java
-private EJiaJieNetWork<UserInfoBean> getUserInfo = new EJiaJieNetWork<UserInfoBean>(ApiConstantData.USER_INFO, UserInfoBean.class,
+public class UserInfoBean {
+
+	private String name;   // az
+	private String age;    // 25
+	private String email;  // maxinliang_no1@163.com
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+}
+```
+
+* 3、在用户信息页面执行NetWork
+```java
+- 先生成相应的NetWork对象：
+private EJiaJieNetWork<UserInfoBean> getUserInfoNetWork = new EJiaJieNetWork<UserInfoBean>(ApiConstantData.USER_INFO, UserInfoBean.class,
 			new OnDataSourceListener<UserInfoBean>() {
 				@Override
 				public void onSuccessData(UserInfoBean response, Object tag) {
@@ -86,5 +119,6 @@ private EJiaJieNetWork<UserInfoBean> getUserInfo = new EJiaJieNetWork<UserInfoBe
 					// showAlterToast(err.getMsg());
 				}
 			});
-	```
-	2)使用：getUserInfo.start();
+
+- 开始网络请求：getUserInfoNetWork.start();
+```
