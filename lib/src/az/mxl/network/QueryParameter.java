@@ -10,7 +10,6 @@ import android.text.TextUtils;
 
 public class QueryParameter {
 
-	private static QueryParameter qp;
 	private HashMap<String, Object> root;
 
 	private QueryParameter() {
@@ -18,8 +17,7 @@ public class QueryParameter {
 	}
 
 	public static QueryParameter Builder(){
-		qp = new QueryParameter();
-		return qp;
+		return new QueryParameter();
 	}
 	
 	public HashMap<String, Object> getParame(){
@@ -35,7 +33,7 @@ public class QueryParameter {
 	public QueryParameter put(String key, Object value) {
 		try {
 			root.put(key, value);
-			return qp;
+			return this;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

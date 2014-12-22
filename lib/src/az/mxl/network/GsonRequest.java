@@ -56,7 +56,7 @@ public class GsonRequest<T> extends Request<T> {
 	protected void deliverResponse(T model) {
 		mListener.onResponse(model);
 	}
-
+		
 	@Override
 	protected Response<T> parseNetworkResponse(NetworkResponse response) {
 		try {
